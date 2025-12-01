@@ -1,0 +1,70 @@
+{
+  "1": {
+    "day": 1,
+    "status": "in_progress",
+    "languages": [
+      "python",
+      "go",
+      "cpp"
+    ]
+  },
+  "2": {
+    "day": 2,
+    "status": "not_started",
+    "languages": []
+  },
+  "3": {
+    "day": 3,
+    "status": "not_started",
+    "languages": []
+  },
+  "4": {
+    "day": 4,
+    "status": "not_started",
+    "languages": []
+  },
+  "5": {
+    "day": 5,
+    "status": "not_started",
+    "languages": []
+  },
+  "6": {
+    "day": 6,
+    "status": "not_started",
+    "languages": []
+  },
+  "7": {
+    "day": 7,
+    "status": "not_started",
+    "languages": []
+  },
+  "8": {
+    "day": 8,
+    "status": "not_started",
+    "languages": []
+  },
+  "9": {
+    "day": 9,
+    "status": "not_started",
+    "languages": []
+  },
+  "10": {
+    "day": 10,
+    "status": "not_started",
+    "languages": []
+  },
+  "11": {
+    "day": 11,
+    "status": "not_started",
+    "languages": []
+  },
+  "12": {
+    "day": 12,
+    "status": "in_progress",
+    "languages": [
+      "python",
+      "go",
+      "cpp"
+    ]
+  }
+}
