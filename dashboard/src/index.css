@@ -1,1 +1,84 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;600;700;900&display=swap');
+
+@theme {
+    --font-source-code: 'Source Code Pro', monospace;
+}
+
+body {
+    font-family: 'Source Code Pro', monospace;
+}
+
+.day-desc {
+    font-family: 'Source Code Pro', monospace;
+    color: #cccccc;
+    line-height: 1.5;
+}
+
+.day-desc h2 {
+    color: #00cc00;
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    text-shadow: 0 0 2px #00cc00;
+}
+
+.day-desc p {
+    margin-bottom: 1em;
+}
+
+.day-desc a {
+    color: #009900;
+    text-decoration: none;
+}
+
+.day-desc a:hover {
+    color: #99ff99;
+}
+
+.day-desc em {
+    color: #ffffff;
+    font-style: normal;
+    text-shadow: 0 0 5px #ffffff;
+    font-weight: bold;
+}
+
+.day-desc em.star {
+    color: #ffff66;
+    text-shadow: 0 0 5px #ffff66;
+}
+
+.day-desc code {
+    font-family: 'Source Code Pro', monospace;
+    color: #ffffff;
+    background-color: #10101a;
+    padding: 0 2px;
+    border: 1px solid #333340;
+    display: inline-block;
+}
+
+.day-desc pre {
+    color: #ffffff;
+    background-color: #10101a;
+    padding: 1rem;
+    border: 1px solid #333340;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+}
+
+.day-desc pre code {
+    border: none;
+    padding: 0;
+    display: block;
+}
+
+.day-desc ul {
+    list-style-type: disc;
+    padding-left: 2rem;
+    margin-bottom: 1rem;
+}
+
+.day-desc li {
+    margin-bottom: 0.5rem;
+}

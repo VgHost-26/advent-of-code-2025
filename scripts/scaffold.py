@@ -2,6 +2,7 @@ import os
 import sys
 import shutil
 import argparse
+import scraper
 
 # Configuration
 LANGUAGES = ['python', 'go', 'cpp']
@@ -15,9 +16,14 @@ def scaffold_day(day):
     inputs_dir = os.path.join(ROOT_DIR, 'inputs')
     input_file = os.path.join(inputs_dir, f"{day_str}.txt")
     if not os.path.exists(input_file):
-        with open(input_file, 'w') as f:
-            f.write("")
-        print(f"Created {input_file}")
+        print(f"Fetching input for day {day}...")
+        if scraper.fetch_input(day):
+            print(f"Created {input_file}")
+        else:
+            # Fallback to creating empty file if scraping fails
+            with open(input_file, 'w') as f:
+                f.write("")
+            print(f"Created empty input file {input_file} (Scraping failed)")
     else:
         print(f"Input file {input_file} already exists")
 
