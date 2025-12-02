@@ -1,5 +1,4 @@
 import sys
-import os
 
 def solve():
     # Read input
@@ -11,7 +10,11 @@ def solve():
         data = f.read().strip()
     
     print(f"Solving with input from {input_file}")
-    #% Part 1
+    
+    # % start
+    # Part 1
+    print("Part 1: Solution")
+    
     
     current_position = 50
     pointed_at_zero = 0
@@ -29,9 +32,8 @@ def solve():
     
     print(f"Part I password: {pointed_at_zero}")
     
-    #%   
-    print()
-    #% Part 2
+    # Part 2
+    print("Part 2: Solution")
     
     
     current_position = 50
@@ -71,7 +73,8 @@ def solve():
     print(f"Part II password: {pointed_at_zero}")
     bruteforce_part2(data)
         
-    #%
+    # % end
+
 
 def bruteforce_part2(data):
     current_position = 50

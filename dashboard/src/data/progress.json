@@ -8,61 +8,91 @@
       "cpp"
     ],
     "title": "Secret Entrance",
-    "html": "<article class=\"day-desc\"><h2>--- Day 1: Secret Entrance ---</h2><p>The Elves have good news and bad news.</p>\n<p>The good news is that they've discovered <a href=\"https://en.wikipedia.org/wiki/Project_management\" target=\"_blank\">project management</a>! This has given them the tools they need to prevent their usual Christmas emergency. For example, they now know that the North Pole decorations need to be finished soon so that other critical tasks can start on time.</p>\n<p>The bad news is that they've realized they have a <em>different</em> emergency: according to their resource planning, none of them have any time left to decorate the North Pole!</p>\n<p>To save Christmas, the Elves need <em>you</em> to <em>finish decorating the North Pole by December 12th</em>.</p>\n<p>Collect stars by solving puzzles.  Two puzzles will be made available on each day; the second puzzle is unlocked when you complete the first.  Each puzzle grants <em class=\"star\">one star</em>. Good luck!</p>\n<p>You arrive at the secret entrance to the North Pole base ready to start decorating. Unfortunately, the <em>password</em> seems to have been changed, so you can't get in. A document taped to the wall helpfully explains:</p>\n<p>\"Due to new security protocols, the password is locked in the safe below. Please see the attached document for the new combination.\"</p>\n<p>The safe has a dial with only an arrow on it; around the dial are the numbers <code>0</code> through <code>99</code> in order. As you turn the dial, it makes a small <em>click</em> noise as it reaches each number.</p>\n<p>The attached document (your puzzle input) contains a sequence of <em>rotations</em>, one per line, which tell you how to open the safe. A rotation starts with an <code>L</code> or <code>R</code> which indicates whether the rotation should be to the <em>left</em> (toward lower numbers) or to the <em>right</em> (toward higher numbers). Then, the rotation has a <em>distance</em> value which indicates how many clicks the dial should be rotated in that direction.</p>\n<p>So, if the dial were pointing at <code>11</code>, a rotation of <code>R8</code> would cause the dial to point at <code>19</code>. After that, a rotation of <code>L19</code> would cause it to point at <code>0</code>.</p>\n<p>Because the dial is a circle, turning the dial <em>left from <code>0</code></em> one click makes it point at <code>99</code>. Similarly, turning the dial <em>right from <code>99</code></em> one click makes it point at <code>0</code>.</p>\n<p>So, if the dial were pointing at <code>5</code>, a rotation of <code>L10</code> would cause it to point at <code>95</code>. After that, a rotation of <code>R5</code> could cause it to point at <code>0</code>.</p>\n<p>The dial starts by pointing at <code>50</code>.</p>\n<p>You could follow the instructions, but your recent required official North Pole secret entrance security training seminar taught you that the safe is actually a decoy. The actual password is <em>the number of times the dial is left pointing at <code>0</code> after any rotation in the sequence</em>.</p>\n<p>For example, suppose the attached document contained the following rotations:</p>\n<pre><code>L68\nL30\nR48\nL5\nR60\nL55\nL1\nL99\nR14\nL82\n</code></pre>\n<p>Following these rotations would cause the dial to move as follows:</p>\n<ul>\n<li>The dial starts by pointing at <code>50</code>.</li>\n<li>The dial is rotated <code>L68</code> to point at <code>82</code>.</li>\n<li>The dial is rotated <code>L30</code> to point at <code>52</code>.</li>\n<li>The dial is rotated <code>R48</code> to point at <code><em>0</em></code>.</li>\n<li>The dial is rotated <code>L5</code> to point at <code>95</code>.</li>\n<li>The dial is rotated <code>R60</code> to point at <code>55</code>.</li>\n<li>The dial is rotated <code>L55</code> to point at <code><em>0</em></code>.</li>\n<li>The dial is rotated <code>L1</code> to point at <code>99</code>.</li>\n<li>The dial is rotated <code>L99</code> to point at <code><em>0</em></code>.</li>\n<li>The dial is rotated <code>R14</code> to point at <code>14</code>.</li>\n<li>The dial is rotated <code>L82</code> to point at <code>32</code>.</li>\n</ul>\n<p>Because the dial points at <code>0</code> a total of three times during this process, the password in this example is <code><em>3</em></code>.</p>\n<p>Analyze the rotations in your attached document. <em>What's the actual password to open the door?</em></p>\n</article>"
+    "html": "<article class=\"day-desc\"><h2>--- Day 1: Secret Entrance ---</h2><p>The Elves have good news and bad news.</p>\n<p>The good news is that they've discovered <a href=\"https://en.wikipedia.org/wiki/Project_management\" target=\"_blank\">project management</a>! This has given them the tools they need to prevent their usual Christmas emergency. For example, they now know that the North Pole decorations need to be finished soon so that other critical tasks can start on time.</p>\n<p>The bad news is that they've realized they have a <em>different</em> emergency: according to their resource planning, none of them have any time left to decorate the North Pole!</p>\n<p>To save Christmas, the Elves need <em>you</em> to <em>finish decorating the North Pole by December 12th</em>.</p>\n<p>Collect stars by solving puzzles.  Two puzzles will be made available on each day; the second puzzle is unlocked when you complete the first.  Each puzzle grants <em class=\"star\">one star</em>. Good luck!</p>\n<p>You arrive at the secret entrance to the North Pole base ready to start decorating. Unfortunately, the <em>password</em> seems to have been changed, so you can't get in. A document taped to the wall helpfully explains:</p>\n<p>\"Due to new security protocols, the password is locked in the safe below. Please see the attached document for the new combination.\"</p>\n<p>The safe has a dial with only an arrow on it; around the dial are the numbers <code>0</code> through <code>99</code> in order. As you turn the dial, it makes a small <em>click</em> noise as it reaches each number.</p>\n<p>The attached document (your puzzle input) contains a sequence of <em>rotations</em>, one per line, which tell you how to open the safe. A rotation starts with an <code>L</code> or <code>R</code> which indicates whether the rotation should be to the <em>left</em> (toward lower numbers) or to the <em>right</em> (toward higher numbers). Then, the rotation has a <em>distance</em> value which indicates how many clicks the dial should be rotated in that direction.</p>\n<p>So, if the dial were pointing at <code>11</code>, a rotation of <code>R8</code> would cause the dial to point at <code>19</code>. After that, a rotation of <code>L19</code> would cause it to point at <code>0</code>.</p>\n<p>Because the dial is a circle, turning the dial <em>left from <code>0</code></em> one click makes it point at <code>99</code>. Similarly, turning the dial <em>right from <code>99</code></em> one click makes it point at <code>0</code>.</p>\n<p>So, if the dial were pointing at <code>5</code>, a rotation of <code>L10</code> would cause it to point at <code>95</code>. After that, a rotation of <code>R5</code> could cause it to point at <code>0</code>.</p>\n<p>The dial starts by pointing at <code>50</code>.</p>\n<p>You could follow the instructions, but your recent required official North Pole secret entrance security training seminar taught you that the safe is actually a decoy. The actual password is <em>the number of times the dial is left pointing at <code>0</code> after any rotation in the sequence</em>.</p>\n<p>For example, suppose the attached document contained the following rotations:</p>\n<pre><code>L68\nL30\nR48\nL5\nR60\nL55\nL1\nL99\nR14\nL82\n</code></pre>\n<p>Following these rotations would cause the dial to move as follows:</p>\n<ul>\n<li>The dial starts by pointing at <code>50</code>.</li>\n<li>The dial is rotated <code>L68</code> to point at <code>82</code>.</li>\n<li>The dial is rotated <code>L30</code> to point at <code>52</code>.</li>\n<li>The dial is rotated <code>R48</code> to point at <code><em>0</em></code>.</li>\n<li>The dial is rotated <code>L5</code> to point at <code>95</code>.</li>\n<li>The dial is rotated <code>R60</code> to point at <code>55</code>.</li>\n<li>The dial is rotated <code>L55</code> to point at <code><em>0</em></code>.</li>\n<li>The dial is rotated <code>L1</code> to point at <code>99</code>.</li>\n<li>The dial is rotated <code>L99</code> to point at <code><em>0</em></code>.</li>\n<li>The dial is rotated <code>R14</code> to point at <code>14</code>.</li>\n<li>The dial is rotated <code>L82</code> to point at <code>32</code>.</li>\n</ul>\n<p>Because the dial points at <code>0</code> a total of three times during this process, the password in this example is <code><em>3</em></code>.</p>\n<p>Analyze the rotations in your attached document. <em>What's the actual password to open the door?</em></p>\n</article>",
+    "solutions": {
+      "python": {
+        "content": "import sys\nimport os\n\ndef solve():\n    # Read input\n    input_file = \"inputs/day01.txt\"\n    if len(sys.argv) > 1:\n        input_file = sys.argv[1]\n        \n    with open(input_file, 'r') as f:\n        data = f.read().strip()\n    \n    print(f\"Solving with input from {input_file}\")\n    \n    # % start\n    # Part 1\n    print(\"Part 1: Solution\")\n    \n    \n    current_position = 50\n    pointed_at_zero = 0\n    for line in data.splitlines():\n        direction = line[0]\n        distance = int(line[1:])\n        \n        if direction == \"R\":\n            current_position = (current_position + distance) % 100\n        elif direction == \"L\":\n            current_position = (current_position - distance) % 100\n        \n        if current_position == 0:\n            pointed_at_zero += 1\n    \n    print(f\"Part I password: {pointed_at_zero}\")\n    \n    # Part 2\n    print(\"Part 2: Solution\")\n    \n    \n    current_position = 50\n    pointed_at_zero = 0\n\n    \n    current_position = 50\n    pointed_at_zero = 0\n    for line in data.splitlines():\n        direction = line[0]\n        distance = int(line[1:])\n        multiple_passes = 0\n        # print(f\"Dial turn [{line}] to pos \", end='')\n        \n        if direction == \"R\":\n            overflow = current_position + distance\n            multiple_passes = overflow // 100\n            current_position = (current_position + distance) % 100\n            \n        elif direction == \"L\":\n            overflow = current_position - distance\n            multiple_passes = abs(overflow // 100)\n            if current_position == 0:\n                multiple_passes -= 1 \n            current_position = (current_position - distance) % 100\n        \n        \n        # print(f\"{current_position}\")\n        if current_position == 0:\n            pointed_at_zero += 1\n            multiple_passes -= 1\n            # print(f\"added exactly pointing at zero: [{line}]\")\n        if multiple_passes > 0:\n            pointed_at_zero += multiple_passes\n            # print(f\"added multiple rounds: [{line}]  {multiple_passes}\")\n        \n    print(f\"Part II password: {pointed_at_zero}\")\n    bruteforce_part2(data)\n        \n    # % end\n\n\ndef bruteforce_part2(data):\n    current_position = 50\n    pointed_at_zero = 0\n\n    for line in data.splitlines():\n        direction = line[0]\n        distance = int(line[1:])\n        \n        if direction == 'R':\n            for i in range(distance):\n                current_position += 1\n                if current_position == 100:\n                    pointed_at_zero +=1\n                    current_position = 0\n                if current_position > 100:\n                    current_position = 1\n        \n        if direction == 'L':\n            for i in range(distance):\n                current_position -= 1\n                if current_position == 0:\n                    pointed_at_zero +=1\n                    current_position = 100\n                if current_position < 0:\n                    current_position = 99\n                    \n    print(\"Bruteforce part 2:\", pointed_at_zero)\n    return pointed_at_zero\n    \nif __name__ == \"__main__\":\n    solve()\n ",
+        "highlight_ranges": [
+          [
+            15,
+            76
+          ]
+        ]
+      },
+      "go": {
+        "content": "package main\n\nimport (\n\t\"fmt\"\n\t\"os\"\n)\n\nfunc main() {\n\tinputFile := \"input.txt\"\n\tif len(os.Args) > 1 {\n\t\tinputFile = os.Args[1]\n\t}\n\n\tdata, err := os.ReadFile(inputFile)\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\n\tfmt.Printf(\"Solving with input from %s\\n\", inputFile)\n\t_ = data\n\t// Part 1\n\t\n\t// Part 2\n}\n",
+        "highlight_ranges": []
+      },
+      "cpp": {
+        "content": "#include <iostream>\n#include <fstream>\n#include <string>\n#include <vector>\n\nint main(int argc, char* argv[]) {\n    std::string inputFile = \"input.txt\";\n    if (argc > 1) {\n        inputFile = argv[1];\n    }\n\n    std::ifstream file(inputFile);\n    if (!file.is_open()) {\n        std::cerr << \"Could not open file \" << inputFile << std::endl;\n        return 1;\n    }\n\n    std::string line;\n    while (std::getline(file, line)) {\n        // Process line\n    }\n\n    std::cout << \"Solving with input from \" << inputFile << std::endl;\n\n    return 0;\n}\n",
+        "highlight_ranges": []
+      }
+    }
   },
   "2": {
     "day": 2,
     "status": "not_started",
-    "languages": []
+    "languages": [],
+    "solutions": {}
   },
   "3": {
     "day": 3,
     "status": "not_started",
-    "languages": []
+    "languages": [],
+    "solutions": {}
   },
   "4": {
     "day": 4,
     "status": "not_started",
-    "languages": []
+    "languages": [],
+    "solutions": {}
   },
   "5": {
     "day": 5,
     "status": "not_started",
-    "languages": []
+    "languages": [],
+    "solutions": {}
   },
   "6": {
     "day": 6,
     "status": "not_started",
-    "languages": []
+    "languages": [],
+    "solutions": {}
   },
   "7": {
     "day": 7,
     "status": "not_started",
-    "languages": []
+    "languages": [],
+    "solutions": {}
   },
   "8": {
     "day": 8,
     "status": "not_started",
-    "languages": []
+    "languages": [],
+    "solutions": {}
   },
   "9": {
     "day": 9,
     "status": "not_started",
-    "languages": []
+    "languages": [],
+    "solutions": {}
   },
   "10": {
     "day": 10,
     "status": "not_started",
-    "languages": []
+    "languages": [],
+    "solutions": {}
   },
   "11": {
     "day": 11,
     "status": "not_started",
-    "languages": []
+    "languages": [],
+    "solutions": {}
   },
   "12": {
     "day": 12,
     "status": "not_started",
-    "languages": []
+    "languages": [],
+    "solutions": {}
   }
 }

@@ -1,11 +1,31 @@
 import { useState } from 'react'
 import progressData from './data/progress.json'
+import SolutionViewer from './components/SolutionViewer'
 
 function App() {
+  const [selectedDay, setSelectedDay] = useState(null)
+  const [selectedLang, setSelectedLang] = useState(null)
+  const [activeTab, setActiveTab] = useState('task') // 'task' or 'solution'
+
   // Convert object to array for easier mapping
   const days = Object.values(progressData).sort((a, b) => a.day - b.day)
 
-  const [selectedDay, setSelectedDay] = useState(null)
+  const handleDayClick = (dayData) => {
+    setSelectedDay(dayData)
+    // Default to solution if available, otherwise task
+    if (dayData.solutions && Object.keys(dayData.solutions).length > 0) {
+      setActiveTab('solution')
+      setSelectedLang(Object.keys(dayData.solutions)[0])
+    } else {
+      setActiveTab('task')
+    }
+  }
+
+  const closeSolution = () => {
+    setSelectedDay(null)
+    setSelectedLang(null)
+    setActiveTab('task')
+  }
 
   return (
     <div className="min-h-screen bg-slate-900 text-white p-8">
@@ -21,11 +41,11 @@ function App() {
           {days.map((dayData) => (
             <div
               key={dayData.day}
-              onClick={() => setSelectedDay(dayData)}
-              className={`rounded-xl p-6 border transition-all duration-300 group cursor-pointer relative overflow-hidden
-                ${dayData.status === 'not_started' ? 'bg-slate-800 border-slate-700 hover:border-slate-500' : ''}
-                ${dayData.status === 'in_progress' ? 'bg-slate-800 border-yellow-500/50 hover:border-yellow-400' : ''}
-                ${dayData.status === 'completed' ? 'bg-slate-800 border-green-500/50 hover:border-green-400' : ''}
+              onClick={() => handleDayClick(dayData)}
+              className={`rounded-xl p-6 border transition-all duration-300 group relative overflow-hidden
+                ${dayData.status === 'not_started' ? 'bg-slate-800 border-slate-700 hover:border-slate-500 cursor-default' : ''}
+                ${dayData.status === 'in_progress' ? 'bg-slate-800 border-yellow-500/50 hover:border-yellow-400 cursor-pointer' : ''}
+                ${dayData.status === 'completed' ? 'bg-slate-800 border-green-500/50 hover:border-green-400 cursor-pointer' : ''}
               `}
             >
               <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
@@ -36,7 +56,7 @@ function App() {
 
               <h2 className="text-2xl font-bold mb-2 text-slate-200">Day {dayData.day}</h2>
               <div className="flex items-center gap-2 mb-4">
-                <span className={`w-3 h-3 rounded-full 
+                <span className={`w-3 h-3 rounded-full
                   ${dayData.status === 'not_started' ? 'bg-slate-600' : ''}
                   ${dayData.status === 'in_progress' ? 'bg-yellow-500' : ''}
                   ${dayData.status === 'completed' ? 'bg-green-500' : ''}
@@ -56,56 +76,92 @@ function App() {
         </div>
       </main>
 
-      {/* Task Detail Modal */}
+      {/* Modal */}
       {selectedDay && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50" onClick={() => setSelectedDay(null)}>
-          <div className="bg-[#0f0f23] rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto border border-[#333340] shadow-2xl" onClick={e => e.stopPropagation()}>
-            <div className="p-8">
-              <div className="flex justify-between items-start mb-6">
-                <div>
-                  <h2 className="text-3xl font-bold text-[#00cc00] mb-2" style={{ textShadow: '0 0 2px #00cc00' }}>
-                    {selectedDay.title || `Day ${selectedDay.day}`}
-                  </h2>
-                  <div className="flex items-center gap-2">
-                    <span className={`px-3 py-1 rounded-full text-sm font-medium
-                      ${selectedDay.status === 'not_started' ? 'bg-slate-700 text-slate-300' : ''}
-                      ${selectedDay.status === 'in_progress' ? 'bg-yellow-500/20 text-yellow-500' : ''}
-                      ${selectedDay.status === 'completed' ? 'bg-green-500/20 text-green-500' : ''}
-                    `}>
-                      {selectedDay.status.replace('_', ' ').toUpperCase()}
-                    </span>
-                  </div>
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50" onClick={closeSolution}>
+          <div className="bg-slate-800 rounded-xl w-full max-w-5xl max-h-[90vh] flex flex-col shadow-2xl border border-slate-700" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between p-6 border-b border-slate-700">
+              <div className="flex items-center gap-4">
+                <h2 className="text-2xl font-bold text-white">Day {selectedDay.day}</h2>
+                <div className="flex bg-slate-900 rounded-lg p-1">
+                  <button
+                    onClick={() => setActiveTab('task')}
+                    className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${activeTab === 'task'
+                        ? 'bg-slate-700 text-white shadow-sm'
+                        : 'text-slate-400 hover:text-slate-200'
+                      }`}
+                  >
+                    Task
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('solution')}
+                    disabled={!selectedDay.solutions || Object.keys(selectedDay.solutions).length === 0}
+                    className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${activeTab === 'solution'
+                        ? 'bg-slate-700 text-white shadow-sm'
+                        : 'text-slate-400 hover:text-slate-200 disabled:opacity-50 disabled:cursor-not-allowed'
+                      }`}
+                  >
+                    Solution
+                  </button>
                 </div>
-                <button
-                  onClick={() => setSelectedDay(null)}
-                  className="p-2 hover:bg-[#333340] rounded-lg transition-colors text-slate-400 hover:text-white"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                </button>
               </div>
+              <button onClick={closeSolution} className="text-slate-400 hover:text-white transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
 
-              {selectedDay.html ? (
-                <div className="day-desc">
-                  <div dangerouslySetInnerHTML={{ __html: selectedDay.html }} />
-                </div>
+            {activeTab === 'solution' && (
+              <div className="flex border-b border-slate-700 px-6 bg-slate-900/50">
+                {Object.keys(selectedDay.solutions).map(lang => (
+                  <button
+                    key={lang}
+                    onClick={() => setSelectedLang(lang)}
+                    className={`px-4 py-3 text-sm font-medium transition-colors border-b-2 ${selectedLang === lang
+                        ? 'border-green-500 text-green-400'
+                        : 'border-transparent text-slate-400 hover:text-slate-200'
+                      }`}
+                  >
+                    {lang.toUpperCase()}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            <div className="flex-1 overflow-auto p-6 bg-[#1e1e1e]">
+              {activeTab === 'task' ? (
+                selectedDay.html ? (
+                  <div className="prose prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: selectedDay.html }} />
+                ) : (
+                  <div className="text-center py-12 text-slate-500">
+                    <p className="text-xl">No task description available.</p>
+                    <p className="mt-2 text-sm">Run the update script to fetch task details.</p>
+                  </div>
+                )
               ) : (
-                <div className="text-center py-12 text-slate-500">
-                  <p className="text-xl">No task description available.</p>
-                  <p className="mt-2 text-sm">Run the update script to fetch task details.</p>
-                </div>
+                selectedLang && selectedDay.solutions[selectedLang] && (
+                  <SolutionViewer
+                    code={selectedDay.solutions[selectedLang].content}
+                    language={selectedLang === 'cpp' ? 'cpp' : selectedLang}
+                    highlightRanges={selectedDay.solutions[selectedLang].highlight_ranges}
+                  />
+                )
               )}
+            </div>
 
-              <div className="mt-8 pt-6 border-t border-[#333340] flex justify-end">
+            {activeTab === 'task' && (
+              <div className="p-4 border-t border-slate-700 bg-slate-800 flex justify-end">
                 <a
                   href={`https://adventofcode.com/2025/day/${selectedDay.day}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center gap-2 text-[#009900] hover:text-[#99ff99] transition-colors"
+                  className="flex items-center gap-2 text-green-500 hover:text-green-400 transition-colors text-sm font-medium"
                 >
-                  [View on AdventOfCode.com]
+                  View on AdventOfCode.com &rarr;
                 </a>
               </div>
-            </div>
+            )}
           </div>
         </div>
       )}
