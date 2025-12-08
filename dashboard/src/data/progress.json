@@ -17,21 +17,24 @@
             14,
             75
           ]
-        ]
+        ],
+        "completed": true
       },
       "go": {
         "content": "package main\n\nimport (\n\t\"fmt\"\n\t\"os\"\n)\n\nfunc main() {\n\tinputFile := \"input.txt\"\n\tif len(os.Args) > 1 {\n\t\tinputFile = os.Args[1]\n\t}\n\n\tdata, err := os.ReadFile(inputFile)\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\n\tfmt.Printf(\"Solving with input from %s\\n\", inputFile)\n\t_ = data\n\t// Part 1\n\t\n\t// Part 2\n}\n",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "completed": false
       },
       "cpp": {
         "content": "#include <iostream>\n#include <fstream>\n#include <string>\n#include <vector>\n\nint main(int argc, char* argv[]) {\n    std::string inputFile = \"input.txt\";\n    if (argc > 1) {\n        inputFile = argv[1];\n    }\n\n    std::ifstream file(inputFile);\n    if (!file.is_open()) {\n        std::cerr << \"Could not open file \" << inputFile << std::endl;\n        return 1;\n    }\n\n    std::string line;\n    while (std::getline(file, line)) {\n        // Process line\n    }\n\n    std::cout << \"Solving with input from \" << inputFile << std::endl;\n\n    return 0;\n}\n",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "completed": false
       }
     }
   },
   "2": {
     "day": 2,
-    "status": "in_progress",
+    "status": "completed",
     "languages": [
       "python",
       "go",
@@ -39,21 +42,24 @@
     ],
     "solutions": {
       "python": {
-        "content": "import math\nimport sys\n\ndef solve():\n    # Read input\n    input_file = \"inputs/day02.txt\"\n    if len(sys.argv) > 1:\n        input_file = sys.argv[1]\n\n    with open(input_file, \"r\") as f:\n        data = f.read().strip()\n\n    print(f\"Solving with input from {input_file}\")\n    # % start\n    # Part 1\n\n    raw_ranges = data.split(\",\")\n    ranges = []\n    for r in raw_ranges:\n        f, t = r.split(\"-\", 2)\n        ranges.append({\"from\": f, \"to\": t})\n\n    sum = 0\n    for r in ranges:\n        start = int(r[\"from\"])\n        end = int(r[\"to\"])\n        \n        for id in range(start, end + 1):\n            id_str = str(id)\n            id_length = len(id_str)\n            \n            if id_length % 2 != 0:\n                continue\n            \n            left = id_str[:id_length//2]\n            right = id_str[id_length//2:]\n            \n            if left == right:\n                sum += id\n                \n            # print(f\"{id} --- left: {left} | right: {right}\")\n        \n    print(f\"Part I final sum: {sum}\")\n    \n    # Part 2\n    \n    sum = 0\n    for r in ranges:\n        start = int(r[\"from\"])\n        end = int(r[\"to\"])\n        \n        for id in range(start, end + 1):\n            id_str = str(id)\n            id_length = len(id_str)\n            \n            for i in range(1, (id_length//2) + 1):\n                pattern = id_str[:i]\n                pattern_count = id_str.count(pattern)\n                \n                if pattern_count == 1:\n                    break\n                # if id_length/i != int(id_length/i):\n                    # break\n                \n                if pattern_count == id_length/i:\n                    sum += id\n                    print(id)\n                    break\n     \n            \n            \n    print(f\"Part II final sum: {sum}\")\n    \n    \n    # % end\n\n\nif __name__ == \"__main__\":\n    solve()\n",
+        "content": "import sys\n\ndef solve():\n    # Read input\n    input_file = \"inputs/day02.txt\"\n    if len(sys.argv) > 1:\n        input_file = sys.argv[1]\n\n    with open(input_file, \"r\") as f:\n        data = f.read().strip()\n\n    print(f\"Solving with input from {input_file}\")\n    # % start\n    # Part 1\n\n    raw_ranges = data.split(\",\")\n    ranges = []\n    for r in raw_ranges:\n        f, t = r.split(\"-\", 2)\n        ranges.append({\"from\": f, \"to\": t})\n\n    sum = 0\n    for r in ranges:\n        start = int(r[\"from\"])\n        end = int(r[\"to\"])\n        \n        for id in range(start, end + 1):\n            id_str = str(id)\n            id_length = len(id_str)\n            \n            if id_length % 2 != 0:\n                continue\n            \n            left = id_str[:id_length//2]\n            right = id_str[id_length//2:]\n            \n            if left == right:\n                sum += id\n                \n            # print(f\"{id} --- left: {left} | right: {right}\")\n        \n    print(f\"Part I final sum: {sum}\")\n    \n    # Part 2\n    \n    sum = 0\n    for r in ranges:\n        start = int(r[\"from\"])\n        end = int(r[\"to\"])\n        \n        for id in range(start, end + 1):\n            id_str = str(id)\n            id_length = len(id_str)\n            \n            for i in range(1, (id_length//2) + 1):\n                pattern = id_str[:i]\n                pattern_count = id_str.count(pattern)\n                \n                if pattern_count == 1:\n                    break\n                \n                if pattern_count == id_length/i:\n                    sum += id\n                    print(id)\n                    break\n     \n            \n            \n    print(f\"Part II final sum: {sum}\")\n    \n    \n    # % end\n\n\nif __name__ == \"__main__\":\n    solve()\n",
         "highlight_ranges": [
           [
-            14,
-            74
+            13,
+            71
           ]
-        ]
+        ],
+        "completed": true
       },
       "go": {
         "content": "package main\n\nimport (\n\t\"fmt\"\n\t\"os\"\n)\n\nfunc main() {\n\tinputFile := \"input.txt\"\n\tif len(os.Args) > 1 {\n\t\tinputFile = os.Args[1]\n\t}\n\n\tdata, err := os.ReadFile(inputFile)\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\n\tfmt.Printf(\"Solving with input from %s\\n\", inputFile)\n\t_ = data\n\t// Part 1\n\t\n\t// Part 2\n}\n",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "completed": false
       },
       "cpp": {
         "content": "#include <iostream>\n#include <fstream>\n#include <string>\n#include <vector>\n\nint main(int argc, char* argv[]) {\n    std::string inputFile = \"input.txt\";\n    if (argc > 1) {\n        inputFile = argv[1];\n    }\n\n    std::ifstream file(inputFile);\n    if (!file.is_open()) {\n        std::cerr << \"Could not open file \" << inputFile << std::endl;\n        return 1;\n    }\n\n    std::string line;\n    while (std::getline(file, line)) {\n        // Process line\n    }\n\n    std::cout << \"Solving with input from \" << inputFile << std::endl;\n\n    return 0;\n}\n",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "completed": false
       }
     },
     "title": "Gift Shop--- Part Two",

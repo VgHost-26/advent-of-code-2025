@@ -31,7 +31,7 @@ def parse_solution(file_path, lang):
     }
 
 def scan_progress():
-    # Load existing progress to preserve manual edits if any (though we overwrite mostly)
+    # Load existing progress to preserve manual edits
     dashboard_data_dir = os.path.join(ROOT_DIR, 'dashboard', 'src', 'data')
     progress_file = os.path.join(dashboard_data_dir, 'progress.json')
     existing_progress = {}
@@ -44,11 +44,12 @@ def scan_progress():
 
     progress = {}
     
-    for day in range(1, 13):
+    for day in range(1, 13): # Scan all days
         day_str = f"day{day:02d}"
         day_key = str(day)
         
         # Start with existing data or default
+        # We preserve the ENTIRE existing object structure to keep manual edits
         day_data = existing_progress.get(day_key, {
             "day": day,
             "status": "not_started",
@@ -56,37 +57,57 @@ def scan_progress():
             "solutions": {}
         })
         
-        # Reset status and languages to re-scan filesystem (source of truth for code)
-        day_data["languages"] = []
-        day_data["status"] = "not_started"
-        day_data["solutions"] = {} 
+        # We will re-scan for content, but we want to KEEP the "completed" flags if they exist in solutions
+        # And we want to KEEP the "status" of the day if it was manually set to something advanced like "completed"
+        # However, we must ensure the "languages" list is up to date with actual files.
         
-        started = False
-        
+        found_languages = []
+        started_any = False
+
         for lang in LANGUAGES:
             lang_dir = os.path.join(ROOT_DIR, lang, day_str)
+            sol_file = None
             if os.path.exists(lang_dir):
-                # Check if solution file exists
                 ext = 'py' if lang == 'python' else 'go' if lang == 'go' else 'cpp'
-                sol_file = os.path.join(lang_dir, f"solution.{ext}")
-                if os.path.exists(sol_file):
-                    day_data["languages"].append(lang)
-                    day_data["solutions"][lang] = parse_solution(sol_file, lang)
-                    started = True
+                candidate = os.path.join(lang_dir, f"solution.{ext}")
+                if os.path.exists(candidate):
+                    sol_file = candidate
+
+            if sol_file:
+                found_languages.append(lang)
+                started_any = True
+                
+                # Re-parse content to get latest code/highlights
+                new_parsed = parse_solution(sol_file, lang)
+                
+                # Merge with existing solution data to preserve 'completed' status
+                existing_sol = day_data.get("solutions", {}).get(lang, {})
+                merged_sol = {
+                    "content": new_parsed["content"],
+                    "highlight_ranges": new_parsed["highlight_ranges"],
+                    "completed": existing_sol.get("completed", False) # Preserve or default to False
+                }
+                day_data["solutions"][lang] = merged_sol
+
+        day_data["languages"] = found_languages
         
-        if started:
+        # Update day status logic
+        # 1. If currently "not_started" but files found -> "in_progress"
+        # 2. If files NOT found -> "not_started" (downgrade if files deleted)
+        # 3. If "part1_completed" or "completed" is set manually, we usually preserve it unless files are gone.
+        
+        if not started_any:
+            day_data["status"] = "not_started"
+        elif day_data["status"] == "not_started" and started_any:
             day_data["status"] = "in_progress"
             
-        # Fetch task info if missing (or if we want to update it)
-        # We check if 'html' is present. If not, we try to fetch it.
-        # We can also fetch it if status is started to ensure we get part 2 if available.
-        # Logic: If no HTML, fetch. If started and "Part Two" is not in HTML, fetch (to see if it appeared).
+        # Fetch task info if missing
         current_html = day_data.get("html")
         should_fetch = False
         
         if not current_html:
             should_fetch = True
-        elif started and "Part Two" not in str(current_html):
+        elif started_any and "Part Two" not in str(current_html):
             should_fetch = True
             
         if should_fetch:

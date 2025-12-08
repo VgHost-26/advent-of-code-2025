@@ -45,6 +45,7 @@ function App() {
               className={`rounded-xl p-6 border transition-all duration-300 group relative overflow-hidden
                 ${dayData.status === 'not_started' ? 'bg-slate-800 border-slate-700 hover:border-slate-500 cursor-default' : ''}
                 ${dayData.status === 'in_progress' ? 'bg-slate-800 border-yellow-500/50 hover:border-yellow-400 cursor-pointer' : ''}
+                ${dayData.status === 'part1_completed' ? 'bg-slate-800 border-blue-500/50 hover:border-blue-400 cursor-pointer' : ''}
                 ${dayData.status === 'completed' ? 'bg-slate-800 border-green-500/50 hover:border-green-400 cursor-pointer' : ''}
               `}
             >
@@ -59,6 +60,7 @@ function App() {
                 <span className={`w-3 h-3 rounded-full
                   ${dayData.status === 'not_started' ? 'bg-slate-600' : ''}
                   ${dayData.status === 'in_progress' ? 'bg-yellow-500' : ''}
+                  ${dayData.status === 'part1_completed' ? 'bg-blue-500' : ''}
                   ${dayData.status === 'completed' ? 'bg-green-500' : ''}
                 `}></span>
                 <span className="text-sm text-slate-400 capitalize">{dayData.status.replace('_', ' ')}</span>
@@ -66,7 +68,11 @@ function App() {
 
               <div className="flex gap-2 mt-4 flex-wrap">
                 {dayData.languages.map(lang => (
-                  <span key={lang} className="text-xs px-2 py-1 rounded bg-slate-700 text-slate-300 border border-slate-600">
+                  <span key={lang} className={`text-xs px-2 py-1 rounded border
+                      ${dayData.solutions[lang]?.completed
+                      ? 'bg-green-900/30 text-green-300 border-green-700'
+                      : 'bg-slate-700 text-slate-300 border-slate-600'}
+                    `}>
                     {lang}
                   </span>
                 ))}
@@ -87,8 +93,8 @@ function App() {
                   <button
                     onClick={() => setActiveTab('task')}
                     className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${activeTab === 'task'
-                        ? 'bg-slate-700 text-white shadow-sm'
-                        : 'text-slate-400 hover:text-slate-200'
+                      ? 'bg-slate-700 text-white shadow-sm'
+                      : 'text-slate-400 hover:text-slate-200'
                       }`}
                   >
                     Task
@@ -97,8 +103,8 @@ function App() {
                     onClick={() => setActiveTab('solution')}
                     disabled={!selectedDay.solutions || Object.keys(selectedDay.solutions).length === 0}
                     className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${activeTab === 'solution'
-                        ? 'bg-slate-700 text-white shadow-sm'
-                        : 'text-slate-400 hover:text-slate-200 disabled:opacity-50 disabled:cursor-not-allowed'
+                      ? 'bg-slate-700 text-white shadow-sm'
+                      : 'text-slate-400 hover:text-slate-200 disabled:opacity-50 disabled:cursor-not-allowed'
                       }`}
                   >
                     Solution
@@ -119,8 +125,8 @@ function App() {
                     key={lang}
                     onClick={() => setSelectedLang(lang)}
                     className={`px-4 py-3 text-sm font-medium transition-colors border-b-2 ${selectedLang === lang
-                        ? 'border-green-500 text-green-400'
-                        : 'border-transparent text-slate-400 hover:text-slate-200'
+                      ? 'border-green-500 text-green-400'
+                      : 'border-transparent text-slate-400 hover:text-slate-200'
                       }`}
                   >
                     {lang.toUpperCase()}
