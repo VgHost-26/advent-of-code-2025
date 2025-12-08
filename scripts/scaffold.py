@@ -3,6 +3,7 @@ import sys
 import shutil
 import argparse
 import scraper
+import update_progress
 
 # Configuration
 LANGUAGES = ['python', 'go', 'cpp']
@@ -45,6 +46,11 @@ def scaffold_day(day):
                 print(f"Warning: Template not found at {template_file}")
         else:
             print(f"Directory {lang_dir} already exists")
+
+    # Update dashboard
+    print("Updating dashboard...")
+    data = update_progress.scan_progress()
+    update_progress.update_dashboard_data(data)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Scaffold Advent of Code day")

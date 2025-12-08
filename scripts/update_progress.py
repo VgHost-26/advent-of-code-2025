@@ -1,5 +1,6 @@
 import os
 import json
+import scraper
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LANGUAGES = ['python', 'go', 'cpp']
@@ -75,6 +76,25 @@ def scan_progress():
         
         if started:
             day_data["status"] = "in_progress"
+            
+        # Fetch task info if missing (or if we want to update it)
+        # We check if 'html' is present. If not, we try to fetch it.
+        # We can also fetch it if status is started to ensure we get part 2 if available.
+        # Logic: If no HTML, fetch. If started and "Part Two" is not in HTML, fetch (to see if it appeared).
+        current_html = day_data.get("html")
+        should_fetch = False
+        
+        if not current_html:
+            should_fetch = True
+        elif started and "Part Two" not in str(current_html):
+            should_fetch = True
+            
+        if should_fetch:
+            print(f"Fetching task info for day {day}...")
+            info = scraper.fetch_task_info(day)
+            if info:
+                day_data["title"] = info["title"]
+                day_data["html"] = info["html"]
             
         progress[day] = day_data
 
