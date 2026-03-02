@@ -2,6 +2,8 @@
 
 This repository contains my solutions for [Advent of Code 2025](https://adventofcode.com/2025), along with a progress dashboard and automation scripts.
 
+You can view my live dashboard with solutions here: [vghost-26.github.io/advent-of-code-2025](https://vghost-26.github.io/advent-of-code-2025/)  
+
 ## Setup
 
 1.  **Python Environment**:
