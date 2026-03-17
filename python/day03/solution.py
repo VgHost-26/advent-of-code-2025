@@ -59,7 +59,60 @@ def solve():
     # Part 2
     # ...
 
-  
+    import numpy as np
+
+    sum = 0
+
+    def get_all_indexes(arr, x):
+        return [i for i, el in enumerate(arr) if el == x]
+
+    def list_to_int(arr):
+        _arr = deepcopy(arr)
+        _output = [str(int(o)) for o in _arr if o != 0]
+        _output = "".join(_output)
+        if _output == "":
+            return 0
+        return int(_output)
+
+    def find_spot(output, number, poss):
+        curr_max = list_to_int(output)
+        sel_i = 0
+        for pos in poss:
+            test_out = deepcopy(output)
+            test_out[pos] = number
+            if list_to_int(test_out) > curr_max:
+                curr_max = list_to_int(test_out)
+                sel_i = pos
+        output[sel_i] = number
+        return output, sel_i
+
+    for bank in banks_list_2:
+        output = np.zeros(len(bank))
+        lasts = 1
+        for i in range(12):
+            m = max(bank)
+            mi = get_all_indexes(bank, m)
+            if len(mi) == 1:
+                output[mi] = m
+                mi = mi[0]
+            else:
+                output, mi = find_spot(output=output, number=m, poss=mi)
+
+            if mi == len(bank) - lasts:
+                bank[mi] = 0
+                lasts += 1
+
+            elif mi > 0 and max(output[:mi]) < m and len(bank[mi:]) >= 12:
+                bank = list(np.zeros(mi + 1)) + bank[mi + 1 :]
+            else:
+                bank[mi] = 0
+        output = [str(int(o)) for o in output if o != 0]
+        output = "".join(output)
+        print(output)
+        sum += int(output)
+
+    print(sum)
+
 
 if __name__ == "__main__":
     solve()
