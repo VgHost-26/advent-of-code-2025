@@ -18,6 +18,7 @@ def solve():
 #   6 98  215 314
 # *   +   *   +  """
 
+    # % start
     # Part 1
     # ...
 
@@ -83,6 +84,7 @@ def solve():
             nums.append("")
 
     print(total_sum)
+    # % end
 
 
 if __name__ == "__main__":
