@@ -39,9 +39,7 @@ jobs:
           run_install: false
 
       - name: Install dependencies
-        run: |
-          pnpm config set onlyBuiltDependencies[] esbuild
-          pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --config.onlyBuiltDependencies=esbuild
         working-directory: ./dashboard
 
       - name: Build
