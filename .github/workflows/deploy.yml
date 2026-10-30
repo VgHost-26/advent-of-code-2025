@@ -39,7 +39,9 @@ jobs:
           run_install: false
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile --public-hoist-pattern *
+        run: |
+          pnpm config set onlyBuiltDependencies[] esbuild
+          pnpm install --frozen-lockfile
         working-directory: ./dashboard
 
       - name: Build
