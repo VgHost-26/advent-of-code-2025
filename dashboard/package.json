@@ -9,9 +9,7 @@
     "build": "tsc --noEmit && vite build",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "preview": "vite preview",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
