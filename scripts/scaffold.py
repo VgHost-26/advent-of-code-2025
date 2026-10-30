@@ -1,6 +1,5 @@
 import os
 import sys
-import shutil
 import argparse
 import scraper
 import update_progress
@@ -40,7 +39,14 @@ def scaffold_day(day):
             target_file = os.path.join(lang_dir, f"solution.{'py' if lang == 'python' else 'go' if lang == 'go' else 'cpp'}")
             
             if os.path.exists(template_file):
-                shutil.copy(template_file, target_file)
+                with open(template_file, "r") as tf:
+                    content = tf.read()
+                # Templates carry {DAY}/{DAY2} placeholders (see BENCH-PLAN.md).
+                content = content.replace("{DAY2}", f"day{day:02d}").replace(
+                    "{DAY}", str(day)
+                )
+                with open(target_file, "w") as tf:
+                    tf.write(content)
                 print(f"Copied template to {target_file}")
             else:
                 print(f"Warning: Template not found at {template_file}")

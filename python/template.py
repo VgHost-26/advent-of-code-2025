@@ -1,21 +1,34 @@
-import sys
+# AoC solution template -- parts as pure functions; bench via `--bench` (BENCH-PLAN.md)
+# % unsolved
 import os
+import sys
 
-def solve():
-    # Read input
-    input_file = "input.txt"
-    if len(sys.argv) > 1:
-        input_file = sys.argv[1]
-        
-    with open(input_file, 'r') as f:
-        data = f.read().strip()
-    
-    print(f"Solving with input from {input_file}")
-    # Part 1
-    # ...
-    
-    # Part 2
-    # ...
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from common import run_cli  # noqa: E402
+
+
+def parse(data: str):
+    """Raw input text -> shared problem data (parts must not mutate it)."""
+    # TODO: adjust based on input type
+    return data
+
+
+# % start
+def part1(parsed) -> int:
+    # TODO: solve part 1
+    return 0
+# % end
+
+
+# % start
+def part2(parsed) -> int:
+    # TODO: solve part 2
+    return 0
+# % end
+
+
+PARTS = {"1": part1, "2": part2}
 
 if __name__ == "__main__":
-    solve()
+    run_cli(parse, PARTS, "inputs/day{DAY2}.txt")

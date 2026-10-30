@@ -1,47 +1,28 @@
 package main
 
 import (
-	aoc "advent-of-code-2025"
-	"fmt"
-	"math"
-	"os"
 	"slices"
 	"strconv"
 	"strings"
+
+	aoc "advent-of-code-2025"
+	"math"
+	"os"
 )
 
 type Range struct {
 	Start int
 	End   int
 }
-type RangeString struct {
-	Start string
-	End   string
-}
 
 func ceilDiv(a, b int) int {
 	return (a + b - 1) / b
 }
 
-func main() {
-	inputFile := "inputs/day02.txt"
-	if len(os.Args) > 1 {
-		inputFile = os.Args[1]
-	}
-
-	inputPath := aoc.FindInputFile(inputFile)
-	data, err := os.ReadFile(inputPath)
-	if err != nil {
-		panic(err)
-	}
-	// data := "11-22,95-115,998-1012,1188511880-1188511890,222220-222224,1698522-1698528,446443-446449,38593856-38593862,565653-565659,824824821-824824827,2121212118-2121212124"
-
-	fmt.Printf("Solving with input from %s\n", inputFile)
-
-	dataPairs := strings.Split(string(data), ",")
+func parse(data string) []Range {
 	var rangesNumbers []Range
 
-	for _, pair := range dataPairs {
+	for _, pair := range strings.Split(data, ",") {
 		first, second, found := strings.Cut(pair, "-")
 		if !found {
 			panic("error while splitting")
@@ -57,11 +38,32 @@ func main() {
 		rangesNumbers = append(rangesNumbers, Range{firstInt, secondInt})
 	}
 
-	// % start
-	// Part 1
+	return rangesNumbers
+}
 
+// % start
+func part1_hmm(rangesNumbers []Range) int {
 	invalidSum := 0
 
+	for _, r := range rangesNumbers {
+		for half := 1; half <= (len(strconv.Itoa(r.End))+1)/2; half++ {
+			base := int(math.Pow10(half))
+			leftLo := 1
+			if half > 1 {
+				leftLo = base / 10
+			}
+			startLeft := max(leftLo, (r.Start+base)/(base+1))
+			endLeft := min(base-1, r.End/(base+1))
+
+			for left := startLeft; left <= endLeft; left++ {
+				invalidSum += left * (base + 1)
+			}
+		}
+	}
+	return invalidSum
+}
+func part1(rangesNumbers []Range) int {
+	invalidSum := 0
 	for _, r := range rangesNumbers {
 		start := r.Start
 		startStr := strconv.Itoa(start)
@@ -85,11 +87,14 @@ func main() {
 		}
 
 	}
-	fmt.Println("part 1 solution:", invalidSum)
+	return invalidSum
+}
 
-	// Part 2
+// % end
 
-	invalidSum = 0
+// % start
+func part2(rangesNumbers []Range) int {
+	invalidSum := 0
 	for _, r := range rangesNumbers {
 		startStr := strconv.Itoa(r.Start)
 		endStr := strconv.Itoa(r.End)
@@ -134,8 +139,11 @@ func main() {
 
 		}
 	}
-	// % end
+	return invalidSum
+}
 
-	fmt.Println("part 2 solution: ", invalidSum)
+// % end
 
+func main() {
+	aoc.RunDay(os.Args, "inputs/day02.txt", parse, part1, part2)
 }

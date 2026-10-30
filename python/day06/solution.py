@@ -1,29 +1,18 @@
-import sys
 import os
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from common import run_cli  # noqa: E402
 
 
-def solve():
-    # Read input
-    input_file = "inputs/day06.txt"
-    if len(sys.argv) > 1:
-        input_file = sys.argv[1]
+def parse(data: str) -> list[str]:
+    return data.splitlines()
 
-    with open(input_file, "r") as f:
-        data = f.read()
 
-    print(f"Solving with input from {input_file}")
-
-#     data = """123 328  51 64 
-#  45 64  387 23 
-#   6 98  215 314
-# *   +   *   +  """
-
-    # % start
-    # Part 1
-    # ...
-
-    lines = data.splitlines()
-    lines = [list(filter(None, line.split(" "))) for line in lines]
+# % start
+def part1(lines: list[str]) -> int:
+    lines = [list(filter(None, line.split(" "))) for line in lines]  # type: ignore
     columns = zip(*lines)
 
     total_sum = 0
@@ -42,15 +31,15 @@ def solve():
                 col_result *= int(col[i])
 
         total_sum += col_result
+    return total_sum
 
-    print(total_sum)
-    # Part 2
-    # ...
 
-    lines = data.splitlines()
+# % end
+
+
+# % start
+def part2(lines: list[str]) -> int:
     matrix = zip(*lines)
-
-  
 
     symbol = ""
     total_sum = 0
@@ -58,8 +47,8 @@ def solve():
     nums = [""]
     list_matrix = list(matrix)
     list_matrix.reverse()
-        
-    for i, line in enumerate(list_matrix):
+
+    for _i, line in enumerate(list_matrix):
         for item in line:
             if item.isdigit():
                 nums[len(nums) - 1] += item
@@ -67,7 +56,7 @@ def solve():
         if line[len(line) - 1] in ["+", "*"]:
             symbol = line[len(line) - 1]
             result = 0 if symbol == "+" else 1
-            
+
             for num in nums:
                 if not num.isdigit():
                     continue
@@ -76,16 +65,18 @@ def solve():
                 else:
                     result *= int(num)
             total_sum += result
-            print(nums, f"{symbol}=", result)
 
             nums = [""]
             result = 0 if symbol == "+" else 1
         else:
             nums.append("")
+    return total_sum
 
-    print(total_sum)
-    # % end
 
+# % end
+
+
+PARTS = {"1": part1, "2": part2}
 
 if __name__ == "__main__":
-    solve()
+    run_cli(parse, PARTS, "inputs/day06.txt")

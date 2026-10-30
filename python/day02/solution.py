@@ -1,41 +1,32 @@
-import sys
 import os
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from common import run_cli  # noqa: E402
 
 
-def solve():
-    # Read input
-    input_file = "inputs\day02.txt"
-    if len(sys.argv) > 1:
-        input_file = sys.argv[1]
-
-    with open(input_file, "r") as f:
-        data = f.read().strip()
-
-    print(f"Solving with input from {input_file}")
-    # % start
-    # Part 1
-
-    raw_ranges = data.split(",")
+def parse(data: str) -> list[tuple[int, int]]:
     ranges = []
-    for r in raw_ranges:
-        f, t = r.split("-", 2)
-        ranges.append({"from": f, "to": t})
+    for r in data.split(","):
+        lo, hi = r.split("-", 2)
+        ranges.append((int(lo), int(hi)))
+    return ranges
 
-    sum = 0
-    for r in ranges:
-        start = int(r["from"])
-        start_str = r["from"]
-        end = int(r["to"])
-        end_str = r["to"]
 
-        
-        while len(start_str) < len(end_str) + 1: 
-            # print(f'start_str {start_str} end_str {end_str}')
-        
+
+# % start
+def part1(ranges: list[tuple[int, int]]) -> int:
+
+    total = 0
+    for start, end in ranges:
+        start_str = str(start)
+        end_str = str(end)
+
+        while len(start_str) < len(end_str) + 1:
             if (len(start_str) == len(end_str)) and (len(start_str) % 2 != 0):
-                # print(f'skipping {r}')
                 break
-            
+
             if len(start_str) % 2 == 0:
                 half_len = len(start_str) // 2
                 left = start_str[:half_len]
@@ -44,31 +35,29 @@ def solve():
 
                 for i in range(half_len):
                     if start < int(id) < end:
-                        sum += int(id)
-                        print(f'add {id}')
+                        total += int(id)
                     else:
                         break
                     left = list(left)
                     right = list(right)
                     left[(half_len - 1) - i] = str(int(left[(half_len - 1) - i]) + 1)
                     right[(half_len - 1) - i] = str(int(right[(half_len - 1) - i]) + 1)
-                    id = ''.join(left) + ''.join(right)
-            
-            start_str = '1' + '0' * len(start_str)
+                    id = "".join(left) + "".join(right)
+
+            start_str = "1" + "0" * len(start_str)
             start = int(start_str)
 
-    print(f"Part I final sum: {sum}")
-    exit()
+    return total
+# % end
 
-    # Part 2
 
-    sum = 0
-    for r in ranges:
-        start = int(r["from"])
-        end = int(r["to"])
 
-        for id in range(start, end + 1):
-            id_str = str(id)
+# % start
+def part2(ranges: list[tuple[int, int]]) -> int:
+    total = 0
+    for lo, hi in ranges:
+        for id_ in range(lo, hi + 1):
+            id_str = str(id_)
             id_length = len(id_str)
 
             for i in range(1, (id_length // 2) + 1):
@@ -79,14 +68,14 @@ def solve():
                     break
 
                 if pattern_count == id_length / i:
-                    sum += id
-                    print(id)
+                    total += id_
                     break
+    return total
+# % end
 
-    print(f"Part II final sum: {sum}")
 
-    # % end
 
+PARTS = {"1": part1, "2": part2}
 
 if __name__ == "__main__":
-    solve()
+    run_cli(parse, PARTS, "inputs/day02.txt")

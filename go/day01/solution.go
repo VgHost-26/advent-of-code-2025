@@ -1,11 +1,11 @@
 package main
 
 import (
+	"strconv"
+
 	aoc "advent-of-code-2025"
-	"fmt"
 	"math"
 	"os"
-	"strconv"
 	"strings"
 	"unicode/utf8"
 )
@@ -18,25 +18,16 @@ func positiveMod(a int, b int) int {
 	return mod
 }
 
-func main() {
-	inputFile := "inputs/day01.txt"
-	if len(os.Args) > 1 {
-		inputFile = os.Args[1]
-	}
+type Parsed struct {
+	Directions []rune
+	Distances  []int
+}
 
-	inputPath := aoc.FindInputFile(inputFile)
-	data, err := os.ReadFile(inputPath)
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Printf("Solving with input from %s\n", inputFile)
-
-	strData := strings.Split(string(data), "\n")
+func parse(data string) Parsed {
 	var directions []rune
 	var distances []int
 
-	for _, val := range strData {
+	for _, val := range strings.Split(data, "\n") {
 		if val == "" {
 			break
 		}
@@ -49,14 +40,17 @@ func main() {
 		distances = append(distances, dist)
 	}
 
-	// Part 1
+	return Parsed{Directions: directions, Distances: distances}
+}
 
+// % start
+func part1(p Parsed) int {
 	dialPosition := 50
 	pointedZeros := 0
 
-	for i := 0; i < len(directions); i++ {
-		dir := directions[i]
-		dist := distances[i]
+	for i := 0; i < len(p.Directions); i++ {
+		dir := p.Directions[i]
+		dist := p.Distances[i]
 
 		switch dir {
 		case 'R':
@@ -71,16 +65,19 @@ func main() {
 			pointedZeros++
 		}
 	}
-	fmt.Printf("Part 1: %d\n", pointedZeros)
+	return pointedZeros
+}
 
-	// Part 2
+// % end
 
-	dialPosition = 50
-	pointedZeros = 0
+// % start
+func part2(p Parsed) int {
+	dialPosition := 50
+	pointedZeros := 0
 
-	for i := 0; i < len(directions); i++ {
-		dir := directions[i]
-		dist := distances[i]
+	for i := 0; i < len(p.Directions); i++ {
+		dir := p.Directions[i]
+		dist := p.Distances[i]
 
 		revolutions := int(math.Floor(float64(dist) / 100))
 		var remainder int
@@ -121,7 +118,11 @@ func main() {
 		}
 
 	}
+	return pointedZeros
+}
 
-	fmt.Printf("Part 2: %d", pointedZeros)
+// % end
 
+func main() {
+	aoc.RunDay(os.Args, "inputs/day01.txt", parse, part1, part2)
 }

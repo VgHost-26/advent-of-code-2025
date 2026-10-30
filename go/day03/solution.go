@@ -1,24 +1,38 @@
 package main
 
+// % unsolved
+
 import (
-	"fmt"
+	aoc "advent-of-code-2025"
 	"os"
+	"strings"
 )
 
+type Parsed []string
+
+func parse(data string) Parsed {
+	// TODO: adjust based on input type
+	return strings.Split(data, "\n")
+}
+
+// % start
+func part1(p Parsed) int {
+	// TODO: solve part 1
+	_ = p
+	return 0
+}
+
+// % end
+
+// % start
+func part2(p Parsed) int {
+	// TODO: solve part 2
+	_ = p
+	return 0
+}
+
+// % end
+
 func main() {
-	inputFile := "input.txt"
-	if len(os.Args) > 1 {
-		inputFile = os.Args[1]
-	}
-
-	data, err := os.ReadFile(inputFile)
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Printf("Solving with input from %s\n", inputFile)
-	_ = data
-	// Part 1
-	
-	// Part 2
+	aoc.RunDay(os.Args, "inputs/day{DAY2}.txt", parse, part1, part2)
 }

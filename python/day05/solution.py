@@ -1,53 +1,42 @@
+import os
 import sys
 
-def solve():
-    # Read input
-    input_file = "inputs/day05.txt"
-    if len(sys.argv) > 1:
-        input_file = sys.argv[1]
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-    with open(input_file, "r") as f:
-        data = f.read().strip()
+from common import run_cli  # noqa: E402
 
-    print(f"Solving with input from {input_file}")
-    # Part 1
-    # ...
 
-#     data = """3-5
-# 10-14
-# 16-20
-# 12-18
-
-# 1
-# 5
-# 8
-# 11
-# 17
-# 32"""
-
+def parse(data: str) -> tuple[list[tuple[int, int]], list[int]]:
     ranges = [
-        (int(range.split("-")[0]), int(range.split("-")[1]))
-        for range in data.split("\n\n")[0].splitlines()
+        (int(_range.split("-")[0]), int(_range.split("-")[1]))
+        for _range in data.split("\n\n")[0].splitlines()
     ]
     products = [int(product) for product in data.split("\n\n")[1].splitlines()]
+    return ranges, products
 
-    # print(ranges)
-    # print(products)
 
+# % start
+def part1(parsed) -> int:
+    ranges, products = parsed
     good_products = 0
     for product in products:
         for _range in ranges:
             if product >= _range[0] and product <= _range[1]:
                 good_products += 1
-                break 
-                
+                break
 
-    print("Total good products: ", good_products)
-
+    return good_products
 
 
-    # Part 2
-    # ...
+# % end
+
+
+def part2(parsed):
+    # TODO: solve part 2
+    return None
+
+
+PARTS = {"1": part1, "2": None}
 
 if __name__ == "__main__":
-    solve()
+    run_cli(parse, PARTS, "inputs/day05.txt")

@@ -84,8 +84,10 @@ def fetch_task_info(day):
                     # Reconstruct the tag
                     attrs_str = "".join([f' {k}="{v}"' for k, v in attrs])
                     self.content.append(f"<{tag}{attrs_str}>")
-                    
-                    if tag == 'h2':
+
+                    if tag == 'h2' and not self.title:
+                        # Only the first h2 ("--- Day N: Title ---") feeds
+                        # the title; part-two h2 would otherwise pollute it.
                         self.in_title = True
 
             def handle_endtag(self, tag):
