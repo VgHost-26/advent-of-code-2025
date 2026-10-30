@@ -1,6 +1,6 @@
 # Advent of Code 2025 — Dashboard
 
-Terminal-style progress dashboard for [Advent of Code 2025](https://adventofcode.com/2025).
+AoC-style progress dashboard for [Advent of Code 2025](https://adventofcode.com/2025).
 Built with React 19 + TypeScript + Vite + Tailwind v4, using the
 [ascii/cnlibs](https://ascii.cnlibs.com/docs) component library (shadcn-style registry,
 ASCII-drawn frames) themed with canonical AoC colors and Fira Code.
@@ -39,8 +39,7 @@ pnpm deploy         # gh-pages publish (predeploy runs build)
 
 ## Theme
 
-The `phosphor` palette from ascii/cnlibs (installed via `shadcn add
-https://ascii.cnlibs.com/r/themes/phosphor.json`) is overridden in `src/index.css`
+The `phosphor` palette from ascii/cnlibs (installed via `shadcn add https://ascii.cnlibs.com/r/themes/phosphor.json`) is overridden in `src/index.css`
 with AoC colors (`#0f0f23` bg, `#00cc00` primary, gold `#ffff66` stars via
 `--aoc-star`). Font: Fira Code through `--font-ascii` (Google Fonts link in
 `index.html`). Components live under `src/components/ui` + `src/components/ascii`
