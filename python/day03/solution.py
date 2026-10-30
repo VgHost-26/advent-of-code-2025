@@ -9,6 +9,7 @@ from common import run_cli  # noqa: E402
 
 def parse(data: str) -> list[list[int]]:
     return [[int(char) for char in bank] for bank in data.split()]
+# % unsolved
 
 
 # % start

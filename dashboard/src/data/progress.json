@@ -119,18 +119,18 @@
         "completed": false
       },
       "go": {
-        "content": "package main\n\n// % unsolved\n\nimport (\n\taoc \"advent-of-code-2025\"\n\t\"os\"\n\t\"strings\"\n)\n\ntype Parsed []string\n\nfunc parse(data string) Parsed {\n\t// TODO: adjust based on input type\n\treturn strings.Split(data, \"\\n\")\n}\n\n// % start\nfunc part1(p Parsed) int {\n\t// TODO: solve part 1\n\t_ = p\n\treturn 0\n}\n\n// % end\n\n// % start\nfunc part2(p Parsed) int {\n\t// TODO: solve part 2\n\t_ = p\n\treturn 0\n}\n\n// % end\n\nfunc main() {\n\taoc.RunDay(os.Args, \"inputs/day{DAY2}.txt\", parse, part1, part2)\n}\n",
+        "content": "package main\n\n// % unsolved\n\nimport (\n\taoc \"advent-of-code-2025\"\n\t\"fmt\"\n\t\"math\"\n\t\"os\"\n\t\"slices\"\n\t\"strconv\"\n\t\"strings\"\n)\n\ntype Parsed [][]int\n\nfunc parse(data string) Parsed {\n\t// TODO: adjust based on input type\n\tvar banks [][]int\n\tdataSplitted := strings.Split(data, \"\\n\")\n\n\tfor _, dataLine := range dataSplitted {\n\t\tvar batteries []int\n\t\t_batteries := strings.Split(dataLine, \"\")\n\n\t\tfor _, _battery := range _batteries {\n\t\t\tbInt, err := strconv.Atoi(_battery)\n\t\t\tif err != nil {\n\t\t\t\tpanic(err)\n\t\t\t}\n\t\t\tbatteries = append(batteries, bInt)\n\t\t}\n\t\tbanks = append(banks, batteries)\n\t}\n\treturn banks\n}\n\n// % start\nfunc part1(p Parsed) int {\n\tsum := 0\n\tfor _, b := range p {\n\t\tbank := slices.Clone(b) // mutate prevention\n\t\tdec := slices.Max(bank[:len(bank)-1])\n\t\tindex := slices.Index(bank, dec)\n\n\t\tbank = slices.Delete(bank, 0, index+1)\n\t\tunit := slices.Max(bank)\n\n\t\tpower := dec*10 + unit\n\t\tsum += power\n\t}\n\n\treturn sum\n}\n\n// % end\n\n// % start\nfunc part2(p Parsed) int {\n\tsum := 0\n\tfor _, b := range p {\n\t\tbank := slices.Clone(b)\n\t\ttotalPower := 0\n\t\tfor batteriesLefft := 11; batteriesLefft >= 0; batteriesLefft-- {\n\t\t\tpower := slices.Max(bank[:len(bank)-batteriesLefft])\n\t\t\tindex := slices.Index(bank, power)\n\t\t\ttotalPower += power * int(math.Pow10(batteriesLefft))\n\t\t\tbank = slices.Delete(bank, 0, index+1)\n\t\t}\n\t\tsum += totalPower\n\t}\n\n\treturn sum\n}\n\n// % end\n\nfunc main() {\n\texampleInput := `987654321111111\n811111111111119\n234234234234278\n818181911112111`\n\n\tparsedExample := parse(exampleInput)\n\tfmt.Println(part1(parsedExample))\n\tfmt.Println(part2(parsedExample))\n\n\taoc.RunDay(os.Args, \"inputs/day03.txt\", parse, part1, part2)\n}\n",
         "highlight_ranges": [
           [
-            18,
-            24
+            38,
+            55
           ],
           [
-            27,
-            33
+            58,
+            75
           ]
         ],
-        "completed": false
+        "completed": true
       },
       "cpp": {
         "content": "#include <iostream>\n#include <fstream>\n#include <string>\n#include <vector>\n\nint main(int argc, char* argv[]) {\n    std::string inputFile = \"input.txt\";\n    if (argc > 1) {\n        inputFile = argv[1];\n    }\n\n    std::ifstream file(inputFile);\n    if (!file.is_open()) {\n        std::cerr << \"Could not open file \" << inputFile << std::endl;\n        return 1;\n    }\n\n    std::string line;\n    while (std::getline(file, line)) {\n        // Process line\n    }\n\n    std::cout << \"Solving with input from \" << inputFile << std::endl;\n\n    return 0;\n}\n",
