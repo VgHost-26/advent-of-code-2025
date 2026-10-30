@@ -1,16 +1,47 @@
-# React + Vite
+# Advent of Code 2025 — Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Terminal-style progress dashboard for [Advent of Code 2025](https://adventofcode.com/2025).
+Built with React 19 + TypeScript + Vite + Tailwind v4, using the
+[ascii/cnlibs](https://ascii.cnlibs.com/docs) component library (shadcn-style registry,
+ASCII-drawn frames) themed with canonical AoC colors and Fira Code.
 
-Currently, two official plugins are available:
+## Commands (pnpm)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```bash
+pnpm dev            # dev server
+pnpm build          # tsc --noEmit + vite build
+pnpm lint           # eslint
+pnpm typecheck      # tsc --noEmit
+pnpm deploy         # gh-pages publish (predeploy runs build)
+```
 
-## React Compiler
+`homepage` + vite `base` point to `/advent-of-code-2025/` for GitHub Pages.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Data flow
 
-## Expanding the ESLint configuration
+- `scripts/update_progress.py` (repo root) scans `go/ python/ cpp/ dayXX/solution.*`
+  and fetches puzzle titles/descriptions from adventofcode.com (needs `AOC_SESSION`
+  in `../.env`), writing everything into `src/data/progress.json`.
+- `src/data/stars.json` is **manual**: `{ "1": { "stars": 2 } }` per day — 0/1/2,
+  scripts never overwrite it.
+- Both JSON files are imported directly by the app (static GitHub Pages, no backend).
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## UI
+
+- Persistent side panel: detail panel right, calendar left (`?day=N` deep links,
+  narrow screens open the panel as a slide-over Sheet).
+- Day tile: title, `*` star indicator (gold = earned), language badges
+  (py / go / c++, strong when both parts solved).
+- Detail tabs: **task** (scraped AoC article), **solutions** (language switcher +
+  highlighted viewer with per-range dimming + copy), **stats** (placeholder table
+  awaiting the benchmark runner and `benchmarks.json`).
+- Keyboard: `↑↓←→` select day, `esc` close.
+
+## Theme
+
+The `phosphor` palette from ascii/cnlibs (installed via `shadcn add
+https://ascii.cnlibs.com/r/themes/phosphor.json`) is overridden in `src/index.css`
+with AoC colors (`#0f0f23` bg, `#00cc00` primary, gold `#ffff66` stars via
+`--aoc-star`). Font: Fira Code through `--font-ascii` (Google Fonts link in
+`index.html`). Components live under `src/components/ui` + `src/components/ascii`
+(owned source copied from the registry).
