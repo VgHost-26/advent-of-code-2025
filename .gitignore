@@ -1,6 +1,8 @@
 # Security
 .env
 
+.bench-build/
+
 # Python
 __pycache__/
 *.pyc
